@@ -194,3 +194,29 @@ test_dataset=tf.keras.utils.image_dataset_from_directory(
     format="tf",
     verbose=True,
 )
+
+y_pred = model.predict(test_dataset)
+y_pred
+
+predicted_categories = tf.argmax(y_pred,axis=1)  # axis=1 means iterate column wise
+
+true_categories= tf.concat([y for x,y in test_dataset], axis=0)    #axis=0 means iterate row wise
+
+y_true = tf.argmax(true_categories,axis=1)
+y_true
+
+from sklearn.metrics import classification_report , confusion_matrix
+
+print(classification_report(y_true, predicted_categories , target_names=class_name))
+
+# Now making Confusion Matrix for model
+# A confusion matrix is a table used to evaluate the performance of a classification model. It compares the model's predicted values against the actual (ground truth) values. This compact format quickly reveals where a machine learning algorithm is making correct predictions and where it is getting "confused
+cm = confusion_matrix(y_true , predicted_categories)
+cm
+
+plt.figure(figsize=(30,30))
+sns.heatmap(cm , annot=True ,annot_kws={'size':10})
+plt.xlabel('Predicted class',fontsize=20)
+plt.ylabel('Actual class' ,fontsize=20)
+plt.title('Plant Disease Confusion Matrix',fontsize=20)
+plt.show()
