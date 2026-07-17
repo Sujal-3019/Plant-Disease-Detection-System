@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# keras file 
+*.keras
+
+# crop_disease_predictior_model.kreas
