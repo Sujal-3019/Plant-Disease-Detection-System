@@ -17,6 +17,54 @@ Original file is located at
 # streamlit \
 # librosa
 
+"""importing dataset from drive and extracting it and arranging it into folders , train , valid , test"""
+from tensorflow.keras.layers import Conv2D, Dense , MaxPooling2D , Flatten , Dropout
+from tensorflow.keras.models import Sequential
+
+from google.colab import drive
+drive.mount('/content/drive')
+
+import zipfile
+
+zip_path = "/content/drive/MyDrive/archive.zip"
+extract_path = "/content/dataset"
+
+with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    zip_ref.extractall(extract_path)
+
+print("Extraction complete!")
+
+
+import shutil
+import os
+
+# Move train
+shutil.move(
+    "/content/dataset/New Plant Diseases Dataset(Augmented)/New Plant Diseases Dataset(Augmented)/train",
+    "/content/dataset/train"
+)
+
+# Move valid
+shutil.move(
+    "/content/dataset/New Plant Diseases Dataset(Augmented)/New Plant Diseases Dataset(Augmented)/valid",
+    "/content/dataset/valid"
+)
+
+# Move test
+shutil.move(
+    "/content/dataset/test/test",
+    "/content/dataset/test_temp"
+)
+
+# Rename test_temp to test
+os.rmdir("/content/dataset/test")
+os.rename("/content/dataset/test_temp", "/content/dataset/test")
+
+import shutil
+
+shutil.rmtree("/content/dataset/New Plant Diseases Dataset(Augmented)")
+shutil.rmtree("/content/dataset/new plant diseases dataset(augmented)")
+
 """**1. Importing Libraries**"""
 
 import tensorflow as tf
@@ -26,8 +74,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import librosa
-from tensorflow.keras.layers import Conv2D, Dense , MaxPooling2D , Flatten
-from tensorflow.keras.models import Sequential
+
 print("TensorFlow:", tf.__version__)
 print("Scikit-learn:", sklearn.__version__)
 print("NumPy:", np.__version__)
@@ -39,7 +86,7 @@ Training Image Preprocessing
 """
 
 training_dataset=tf.keras.utils.image_dataset_from_directory(
-    '/content/PlantDataset/train',
+    '/content/dataset/train',
     labels="inferred", # inferred means that labels are generated from the directory structure
     label_mode="categorical", # means there are so many categories if there would be two class then mode is binary
     class_names=None, #since categorical so no need to give explicitly
@@ -61,7 +108,7 @@ training_dataset=tf.keras.utils.image_dataset_from_directory(
 """Validation Image Preprocessing"""
 
 validation_dataset=tf.keras.utils.image_dataset_from_directory(
-    '/content/PlantDataset/valid',
+    '/content/dataset/valid',
     labels="inferred", # inferred means that labels are generated from the directory structure
     label_mode="categorical", # means there are so many categories
     class_names=None, #since categorical so no need to give explicitly
@@ -94,6 +141,14 @@ validation_dataset=tf.keras.utils.image_dataset_from_directory(
 
 **Flatening** ---> then 2d matrix is converted into 1d matrix and passed into nn for further calculations
 
+**To overcome overshooting problems**
+
+
+
+1.   choose small learning rate like change 0.001 to 0.0001
+2.   there may be underfitting so increase number of neurons
+3.   adding more convolution layer to extract more features from image
+
 **3. Building Model**
 """
 
@@ -104,25 +159,37 @@ model = Sequential()
 """----> Building Convolution Layer"""
 
 model.add(Conv2D(filters=32 , kernel_size=3 ,padding='same' ,activation='relu' , input_shape =[128,128,3]))  # creating kernel size of 3 for making 32 feature map
-model.add(Conv2D(filters=32 , kernel_size=3 ,padding='same' ,activation='relu'))
+model.add(Conv2D(filters=32 , kernel_size=3 ,activation='relu'))
 model.add(MaxPooling2D(pool_size=2 ,strides=2))
 
-model.add(Conv2D(filters=64 , kernel_size=3 ,padding='same' ,activation='relu' , input_shape =[128,128,3]))  # creating kernel size of 3 for making 32 feature map
-model.add(Conv2D(filters=64 , kernel_size=3 ,padding='same' ,activation='relu'))
+model.add(Conv2D(filters=64 , kernel_size=3 ,padding='same' ,activation='relu' ))  # creating kernel size of 3 for making 32 feature map
+model.add(Conv2D(filters=64 , kernel_size=3 ,activation='relu'))
 model.add(MaxPooling2D(pool_size=2 ,strides=2))
 
-model.add(Conv2D(filters=128 , kernel_size=3 ,padding='same' ,activation='relu' , input_shape =[128,128,3]))  # creating kernel size of 3 for making 32 feature map
-model.add(Conv2D(filters=128 , kernel_size=3 ,padding='same' ,activation='relu'))
+model.add(Conv2D(filters=128 , kernel_size=3 ,padding='same' ,activation='relu'))  # creating kernel size of 3 for making 32 feature map
+model.add(Conv2D(filters=128 , kernel_size=3 ,activation='relu'))
 model.add(MaxPooling2D(pool_size=2 ,strides=2))
 
-model.add(Conv2D(filters=256 , kernel_size=3 ,padding='same' ,activation='relu' , input_shape =[128,128,3]))  # creating kernel size of 3 for making 32 feature map
-model.add(Conv2D(filters=256 , kernel_size=3 ,padding='same' ,activation='relu'))
+model.add(Conv2D(filters=256 , kernel_size=3 ,padding='same' ,activation='relu'))  # creating kernel size of 3 for making 32 feature map
+model.add(Conv2D(filters=256 , kernel_size=3 ,activation='relu'))
 model.add(MaxPooling2D(pool_size=2 ,strides=2))
+
+model.add(Conv2D(filters=256 , kernel_size=3 ,padding='same' ,activation='relu'))  # creating kernel size of 3 for making 32 feature map
+model.add(Conv2D(filters=256 , kernel_size=3 ,activation='relu'))
+model.add(MaxPooling2D(pool_size=2 ,strides=2))
+
+model.add(Conv2D(filters=512 , kernel_size=3 ,padding='same' ,activation='relu'))  # creating kernel size of 3 for making 32 feature map
+model.add(Conv2D(filters=512 , kernel_size=3 ,padding='same' ,activation='relu'))
+model.add(MaxPooling2D(pool_size=2 ,strides=2))
+
+model.add(Dropout(0.25)) #to avoid overfitting we are dropping 25% neurons from layers
 
 """----> Flatening and passing it to hidden layers"""
 
 model.add(Flatten())
-model.add(Dense(units=1024 , activation='relu'))
+model.add(Dense(units=1500 , activation='relu'))   # number of neuron is set to 1500
+
+model.add(Dropout(0.4))
 
 """-----> Output layer"""
 
@@ -130,7 +197,8 @@ model.add(Dense(units=38 ,activation='softmax')) # hidden layer --> choose softm
 
 """----> Compiling Model"""
 
-model.compile(optimizer='adam' ,loss='categorical_crossentropy' , metrics=['accuracy'])
+model.compile(optimizer=tf.keras.optimizers.Adam(
+    learning_rate=0.0001,) ,loss='categorical_crossentropy' , metrics=['accuracy'])
 
 model.summary()
 
@@ -151,14 +219,14 @@ val_loss , val_acc = model.evaluate(validation_dataset)
 
 """**6. Saving Model**"""
 
-model.save("crop_disease_predictior_model.keras")
+model.save("new_crop_disease_predictior_model.keras")
 
 traing_history.history
 
 """Recording training history in json format"""
 
 import json
-with open("crop_disease_predictior_history.json",'w') as f:
+with open("new_crop_disease_predictior_history.json",'w') as f:
   json.dump(traing_history.history , f)
 
 """**7. Accuracy Visualization**"""
@@ -176,7 +244,7 @@ class_name = validation_dataset.class_names
 class_name
 
 test_dataset=tf.keras.utils.image_dataset_from_directory(
-    '/content/PlantDataset/valid',
+    '/content/dataset/valid',
     labels="inferred", # inferred means that labels are generated from the directory structure
     label_mode="categorical", # means there are so many categories
     class_names=None, #since categorical so no need to give explicitly
@@ -198,21 +266,38 @@ test_dataset=tf.keras.utils.image_dataset_from_directory(
 y_pred = model.predict(test_dataset)
 y_pred
 
+"""Selecting class with maximum probability"""
+
 predicted_categories = tf.argmax(y_pred,axis=1)  # axis=1 means iterate column wise
+
+predicted_categories
 
 true_categories= tf.concat([y for x,y in test_dataset], axis=0)    #axis=0 means iterate row wise
 
+true_categories
+
 y_true = tf.argmax(true_categories,axis=1)
 y_true
+
+"""Calculate precision recall"""
 
 from sklearn.metrics import classification_report , confusion_matrix
 
 print(classification_report(y_true, predicted_categories , target_names=class_name))
 
-# Now making Confusion Matrix for model
-# A confusion matrix is a table used to evaluate the performance of a classification model. It compares the model's predicted values against the actual (ground truth) values. This compact format quickly reveals where a machine learning algorithm is making correct predictions and where it is getting "confused
+"""Now making Confusion Matrix for model
+
+> Add blockquote
+
+A confusion matrix is a table used to evaluate the performance of a classification model. It compares the model's predicted values against the actual (ground truth) values. This compact format quickly reveals where a machine learning algorithm is making correct predictions and where it is getting "confused
+"""
+
 cm = confusion_matrix(y_true , predicted_categories)
 cm
+
+
+
+"""Confusion Matrix Visualization"""
 
 plt.figure(figsize=(30,30))
 sns.heatmap(cm , annot=True ,annot_kws={'size':10})
