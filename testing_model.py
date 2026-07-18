@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import cv2
 
 #loading model
-model = tf.keras.models.load_model('crop_disease_predictior_model.keras')
+model = tf.keras.models.load_model('new_crop_disease_predictior_model.keras')
 
 #uploading image
 image_path="Screenshot 2026-07-17 175121.png"
