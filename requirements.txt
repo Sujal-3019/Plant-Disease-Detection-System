@@ -1,9 +1,9 @@
-tensorflow
-scikit-learn
+tensorflow==2.19.1
+streamlit
 numpy
+pandas
+scikit-learn
 matplotlib
 seaborn
-pandas
-streamlit
 librosa
-opencv-python
+opencv-python-headless
