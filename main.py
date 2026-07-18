@@ -45,7 +45,7 @@ st.markdown("""
 # ----------------------------
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model("crop_disease_predictior_model.keras")
+    return tf.keras.models.load_model("new_crop_disease_predictior_model.keras")
 
 model = load_model()
 
