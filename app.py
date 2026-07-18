@@ -257,18 +257,18 @@ unsafe_allow_html=True
 # =================================================
 
 
-display_name = format_class_name(
-    predicted_class
-)
+if uploaded_file and predict_btn:
 
+    display_name = format_class_name(
+        predicted_class
+    )
 
-confidence_color_code = confidence_color(
-    confidence
-)
+    confidence_color_code = confidence_color(
+        confidence
+    )
 
-
-st.markdown(
-f"""
+    st.markdown(
+        f"""
 
 <div class="prediction-card">
 
@@ -315,217 +315,194 @@ color:{confidence_color_code};
 </div>
 
 """,
-unsafe_allow_html=True
-)
-# =================================================
-# TOP 5 PREDICTIONS
-# =================================================
-
-
-st.markdown(
-"""
-## 📊 Top 5 AI Predictions
-"""
-)
-
-
-top5 = top_predictions(
-    probabilities,
-    CLASS_NAMES,
-    top=5
-)
-
-
-rank_icons = [
-    "🥇",
-    "🥈",
-    "🥉",
-    "4️⃣",
-    "5️⃣"
-]
-
-
-for index, item in enumerate(top5):
-
-
-    name = format_class_name(
-        item["class"]
+        unsafe_allow_html=True
     )
-
-
-    score = item["confidence"]
-
+    # =================================================
+    # TOP 5 PREDICTIONS
+    # =================================================
 
     st.markdown(
-    f"""
+        """
+## 📊 Top 5 AI Predictions
+"""
+    )
+
+    top5 = top_predictions(
+        probabilities,
+        CLASS_NAMES,
+        top=5
+    )
+
+    rank_icons = [
+        "🥇",
+        "🥈",
+        "🥉",
+        "4️⃣",
+        "5️⃣"
+    ]
+
+    for index, item in enumerate(top5):
+
+        name = format_class_name(
+            item["class"]
+        )
+
+        score = item["confidence"]
+
+        st.markdown(
+            f"""
     
+<div class="glass-card">
+
+
+<h3>
+{rank_icons[index]} {name}
+</h3>
+
+
+<div style="
+background:#eeeeee;
+border-radius:15px;
+height:12px;
+">
+
+
+<div style="
+width:{score}%;
+background:#43A047;
+height:100%;
+border-radius:15px;
+">
+</div>
+
+
+</div>
+
+
+<p>
+Confidence:
+<b>
+{score:.2f}%
+</b>
+</p>
+
+
+</div>
+
+""",
+            unsafe_allow_html=True
+        )
+    # =================================================
+    # DISEASE INFORMATION
+    # =================================================
+
+    st.divider()
+
+    st.markdown(
+        """
+## 🌿 Disease Information
+"""
+    )
+
+    info = DISEASE_INFO.get(
+        predicted_class
+    )
+
+    if info:
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+
+            st.markdown(
+                f"""
     <div class="glass-card">
+
+    <h3>
+    🌱 Crop
+    </h3>
+
+    <h2>
+    {info['crop']}
+    </h2>
 
 
     <h3>
-    {rank_icons[index]} {name}
+    ⚠ Severity
     </h3>
 
-
-    <div style="
-    background:#eeeeee;
-    border-radius:15px;
-    height:12px;
-    ">
-
-
-    <div style="
-    width:{score}%;
-    background:#43A047;
-    height:100%;
-    border-radius:15px;
-    ">
-    </div>
-
-
-    </div>
-
-
-    <p>
-    Confidence:
-    <b>
-    {score:.2f}%
-    </b>
-    </p>
-
+    <h2>
+    {info['severity']}
+    </h2>
 
     </div>
 
     """,
-    unsafe_allow_html=True
-    )
-    # =================================================
-# DISEASE INFORMATION
-# =================================================
-
-
-st.divider()
-
-
-st.markdown(
-"""
-## 🌿 Disease Information
-"""
-)
-
-
-info = DISEASE_INFO.get(
-    predicted_class
-)
-
-
-if info:
-
-
-    col1, col2 = st.columns(2)
-
-
-    with col1:
-
-        st.markdown(
-        f"""
-        <div class="glass-card">
-
-        <h3>
-        🌱 Crop
-        </h3>
-
-        <h2>
-        {info['crop']}
-        </h2>
-
-
-        <h3>
-        ⚠ Severity
-        </h3>
-
-        <h2>
-        {info['severity']}
-        </h2>
-
-        </div>
-
-        """,
-        unsafe_allow_html=True
-        )
-
-
-    with col2:
-
-        st.markdown(
-        f"""
-        <div class="glass-card">
-
-        <h3>
-        📝 Description
-        </h3>
-
-        <p>
-        {info['description']}
-        </p>
-
-        </div>
-
-        """,
-        unsafe_allow_html=True
-        )
-        # =================================================
-# DISEASE DETAILS
-# =================================================
-
-
-if info:
-
-    st.divider()
-
-
-    # ---------------------------------------------
-    # Symptoms + Causes
-    # ---------------------------------------------
-
-
-    col1, col2 = st.columns(2, gap="large")
-
-
-    with col1:
-
-        st.markdown(
-        """
-        <div class="glass-card">
-
-        <h2>
-        ⚠️ Symptoms
-        </h2>
-
-        """,
-        unsafe_allow_html=True
-        )
-
-
-        for symptom in info["symptoms"]:
-
-            st.write(
-                f"🔸 {symptom}"
+                unsafe_allow_html=True
             )
 
+        with col2:
 
-        st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-        )
+            st.markdown(
+                f"""
+    <div class="glass-card">
 
+    <h3>
+    📝 Description
+    </h3>
 
+    <p>
+    {info['description']}
+    </p>
 
-    with col2:
+    </div>
 
+    """,
+                unsafe_allow_html=True
+            )
+    # =================================================
+    # DISEASE DETAILS
+    # =================================================
 
-        st.markdown(
-        """
+    if info:
+
+        st.divider()
+
+        # ---------------------------------------------
+        # Symptoms + Causes
+        # ---------------------------------------------
+
+        col1, col2 = st.columns(2, gap="large")
+
+        with col1:
+
+            st.markdown(
+                """
+    <div class="glass-card">
+
+    <h2>
+    ⚠️ Symptoms
+    </h2>
+
+    """,
+                unsafe_allow_html=True
+            )
+
+            for symptom in info["symptoms"]:
+
+                st.write(
+                    f"🔸 {symptom}"
+                )
+
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True
+            )
+
+        with col2:
+
+            st.markdown(
+                """
         <div class="glass-card">
 
         <h2>
@@ -533,41 +510,32 @@ if info:
         </h2>
 
         """,
-        unsafe_allow_html=True
-        )
-
-
-        for cause in info["causes"]:
-
-            st.write(
-                f"🔸 {cause}"
+                unsafe_allow_html=True
             )
 
+            for cause in info["causes"]:
 
-        st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-        )
+                st.write(
+                    f"🔸 {cause}"
+                )
 
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True
+            )
 
+        # ---------------------------------------------
+        # Prevention + Treatment
+        # ---------------------------------------------
 
-    # ---------------------------------------------
-    # Prevention + Treatment
-    # ---------------------------------------------
+        st.write("")
 
+        col3, col4 = st.columns(2, gap="large")
 
-    st.write("")
+        with col3:
 
-
-    col3, col4 = st.columns(2, gap="large")
-
-
-
-    with col3:
-
-
-        st.markdown(
-        """
+            st.markdown(
+                """
         <div class="glass-card">
 
         <h2>
@@ -575,29 +543,24 @@ if info:
         </h2>
 
         """,
-        unsafe_allow_html=True
-        )
-
-
-        for item in info["prevention"]:
-
-            st.write(
-                f"✅ {item}"
+                unsafe_allow_html=True
             )
 
+            for item in info["prevention"]:
 
-        st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-        )
+                st.write(
+                    f"✅ {item}"
+                )
 
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True
+            )
 
+        with col4:
 
-    with col4:
-
-
-        st.markdown(
-        """
+            st.markdown(
+                """
         <div class="glass-card">
 
         <h2>
@@ -605,25 +568,19 @@ if info:
         </h2>
 
         """,
-        unsafe_allow_html=True
-        )
-
-
-        for item in info["treatment"]:
-
-            st.write(
-                f"💡 {item}"
+                unsafe_allow_html=True
             )
 
+            for item in info["treatment"]:
 
-        st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-        )
-        # =================================================
-# AI MODEL INFORMATION
-# =================================================
+                st.write(
+                    f"💡 {item}"
+                )
 
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True
+            )
 
 st.divider()
 
