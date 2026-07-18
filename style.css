@@ -1,0 +1,600 @@
+/* ===============================
+   Google Font
+================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html,
+body,
+[class*="css"]{
+    font-family:'Poppins',sans-serif;
+}
+
+/* ===============================
+   Background
+================================= */
+
+.stApp{
+    background:linear-gradient(
+        135deg,
+        #f8fffa 0%,
+        #eef9f0 100%
+    );
+}
+
+/* ===============================
+   Hide Streamlit Branding
+================================= */
+
+#MainMenu{
+    visibility:hidden;
+}
+
+footer{
+    visibility:hidden;
+}
+
+/* =================================
+   Keep Streamlit Header Visible
+================================= */
+
+[data-testid="stHeader"]{
+
+    visibility:visible !important;
+
+    background:white !important;
+
+}
+
+
+/* Hamburger Menu Icon */
+
+[data-testid="stHeader"] button{
+
+    visibility:visible !important;
+
+}
+
+
+[data-testid="stHeader"] button svg{
+
+    fill:black !important;
+
+    color:black !important;
+
+}
+
+
+/* Header menu hover */
+
+[data-testid="stHeader"] button:hover{
+
+    background:#eeeeee !important;
+
+    border-radius:8px;
+
+}
+
+/* ===============================
+   Hero Section
+================================= */
+
+.hero{
+
+    background:linear-gradient(
+    135deg,
+    #2E7D32,
+    #43A047);
+
+    color:white;
+
+    padding:45px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    box-shadow:
+    0px 20px 45px
+    rgba(0,0,0,.15);
+
+    margin-bottom:30px;
+
+}
+
+.hero h1{
+
+    font-size:48px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+.hero p{
+
+    font-size:19px;
+
+    line-height:1.7;
+
+    opacity:.96;
+
+}
+
+/* ===============================
+   Glass Card
+================================= */
+
+.glass-card{
+
+    background:rgba(255,255,255,.72);
+
+    backdrop-filter:blur(18px);
+
+    padding:22px;
+
+    border-radius:18px;
+
+    border:1px solid rgba(255,255,255,.6);
+
+    box-shadow:
+
+    0 10px 35px
+    rgba(0,0,0,.08);
+
+    margin-bottom:18px;
+
+}
+
+.glass-card h3{
+
+    color:#1B5E20;
+
+    margin-bottom:8px;
+
+}
+/* =================================
+   Glass Card Text
+================================= */
+
+
+.glass-card{
+
+    color:#000000 !important;
+
+}
+
+
+.glass-card h1,
+.glass-card h2,
+.glass-card h3{
+
+    color:#1B5E20 !important;
+
+}
+
+
+.glass-card p,
+.glass-card li{
+
+    color:#222222 !important;
+
+}
+
+/* ===============================
+   Prediction Card
+================================= */
+
+.prediction-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    text-align:center;
+
+    border-left:10px solid #2E7D32;
+
+    box-shadow:
+
+    0 15px 35px
+    rgba(0,0,0,.08);
+
+    margin-bottom:25px;
+
+}
+
+.prediction-card h2{
+
+    color:#1B5E20;
+
+    font-size:34px;
+
+}
+
+.prediction-card h3{
+
+    color:#555;
+
+}
+
+.prediction-card h1{
+
+    color:#2E7D32;
+
+    font-size:50px;
+
+}
+
+/* =================================
+   Sidebar
+================================= */
+
+
+[data-testid="stSidebar"]{
+
+    background:#ffffff !important;
+
+}
+
+
+/* Sidebar all text */
+
+[data-testid="stSidebar"] *{
+
+    color:#000000 !important;
+
+}
+
+
+/* Sidebar headings */
+
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3{
+
+    color:#1B5E20 !important;
+
+    font-weight:700;
+
+}
+
+
+/* Sidebar divider */
+
+[data-testid="stSidebar"] hr{
+
+    border-color:#dddddd;
+
+}
+
+/* ===============================
+   File Uploader
+================================= */
+
+[data-testid="stFileUploader"]{
+
+    border:3px dashed #43A047;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    background:#f6fff6;
+
+}
+
+/* ===============================
+   Buttons
+================================= */
+
+.stButton>button{
+
+    background:linear-gradient(
+    135deg,
+    #2E7D32,
+    #43A047);
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    height:55px;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.stButton>button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+    0px 15px 25px
+    rgba(0,0,0,.18);
+
+}
+
+/* ===============================
+   Image
+================================= */
+
+img{
+
+    border-radius:18px;
+
+}
+
+/* ===============================
+   Progress Bar
+================================= */
+
+.stProgress>div>div{
+
+    background:#2E7D32;
+
+}
+
+/* ===============================
+   Metrics
+================================= */
+
+[data-testid="metric-container"]{
+
+    background:white;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    box-shadow:
+
+    0 8px 20px
+    rgba(0,0,0,.06);
+
+}
+
+/* ===============================
+   Success
+================================= */
+
+.stSuccess{
+
+    border-radius:15px;
+
+}
+
+/* ===============================
+   Info
+================================= */
+
+.stInfo{
+
+    border-radius:15px;
+
+}
+
+/* ===============================
+   Expander
+================================= */
+
+.streamlit-expanderHeader{
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
+
+/* ===============================
+   Scrollbar
+================================= */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#43A047;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#edf7ee;
+
+}
+
+/* ===============================
+   Responsive
+================================= */
+
+@media (max-width:768px){
+
+.hero{
+
+padding:25px;
+
+}
+
+.hero h1{
+
+font-size:34px;
+
+}
+
+.hero p{
+
+font-size:16px;
+
+}
+
+.prediction-card h1{
+
+font-size:36px;
+
+}
+
+}
+/* ===============================
+   Disease Lists
+================================ */
+
+.glass-card ul{
+
+    padding-left:20px;
+
+}
+
+
+.glass-card li{
+
+    margin-bottom:8px;
+
+}
+
+
+/* ===============================
+   Footer
+================================ */
+
+.footer{
+
+    text-align:center;
+
+    color:#777;
+
+    padding:30px;
+
+}
+/* =================================
+   Streamlit Menu Icon
+================================= */
+
+/* Hamburger menu icon */
+
+[data-testid="stHeader"] button svg{
+
+    fill:#000000 !important;
+
+    color:#000000 !important;
+
+}
+
+
+/* Header background */
+
+[data-testid="stHeader"]{
+
+    background:white !important;
+
+}
+
+
+/* Menu button hover */
+
+[data-testid="stHeader"] button:hover{
+
+    background:#eeeeee !important;
+
+    border-radius:10px;
+
+}
+
+/* =================================
+   Global Text Visibility
+================================= */
+
+
+.stApp,
+
+.stMarkdown,
+
+p,
+
+span,
+
+label{
+
+    color:#000000;
+
+}
+/* =================================
+   Hero Text
+================================= */
+
+
+.hero,
+.hero h1,
+.hero p{
+
+    color:white !important;
+
+}
+
+
+.hero h1{
+
+    font-weight:700;
+
+}
+
+
+.hero p{
+
+    opacity:0.95;
+
+}
+
+/* =================================
+   File Uploader
+================================= */
+
+
+[data-testid="stFileUploader"] *{
+
+    color:#faf7f7 !important;
+
+}
+
+
+[data-testid="stFileUploader"] small{
+
+    color:#444444 !important;
+
+}
+/* =================================
+   Buttons
+================================= */
+
+
+.stButton button{
+
+    color:white !important;
+
+    font-weight:600;
+
+}
+
+
+.stButton button:hover{
+
+    color:white !important;
+
+}
+
