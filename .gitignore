@@ -218,7 +218,10 @@ __marimo__/
 .streamlit/secrets.toml
 
 
-
+# adding sample images
 Screenshot 2026-07-17 175121.png
-applecedarrust disease.jpg
-img2applerust.jpg
+apple_healthy.jpg
+cherry_healthy.jpg
+Orange___Haunglongbing_(Citrus_greening).jpg
+
+
